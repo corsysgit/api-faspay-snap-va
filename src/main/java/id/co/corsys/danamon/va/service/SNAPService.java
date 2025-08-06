@@ -3,7 +3,9 @@ package id.co.corsys.danamon.va.service;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,10 +71,10 @@ public class SNAPService {
 		virtualAccountData.setCustomerNo(request.getCustomerNo());
 		virtualAccountData.setPartnerServiceId(request.getPartnerServiceId());
 		virtualAccountData.setVirtualAccountNo(request.getVirtualAccountNo());
-		virtualAccountData.setInquiryRequestId(request.getInquiryRequestId());
-		virtualAccountData.setTotalAmount(totalAmount);
-		virtualAccountData.setFeeAmount(feeAmount);
-		virtualAccountData.setBillDetails(new ArrayList());
+//		virtualAccountData.setInquiryRequestId(request.getInquiryRequestId());
+//		virtualAccountData.setTotalAmount(totalAmount);
+//		virtualAccountData.setFeeAmount(feeAmount);
+//		virtualAccountData.setBillDetails(new ArrayList());
 //		SNAPLanguage freeText = new SNAPLanguage();
 //		freeText.setEnglish("");
 //		freeText.setIndonesia("");
@@ -80,6 +82,7 @@ public class SNAPService {
 //		freeTexts.add(freeText);
 //		virtualAccountData.setFreeTexts(freeTexts);
 		result.setVirtualAccountData(virtualAccountData);
+		virtualAccountData.setInquiryRequestId("abcdef-123456-abcdef");
 
 		response = result;
 
@@ -89,8 +92,8 @@ public class SNAPService {
 			validateValue(request.getPartnerServiceId(), "N", 8, "PartnerServiceId");
 			validateValue(request.getCustomerNo(), "N", 20, "CustomerNo");
 			validateValue(request.getVirtualAccountNo(), "N", 28, "VirtualAccountNo");
-			validateValue(request.getTrxDateInit(), "T", 25, "TrxDateInit");
-			validateValue(request.getChannelCode(), "N", 4, "ChannelCode");
+//			validateValue(request.getTrxDateInit(), "T", 25, "TrxDateInit");
+//			validateValue(request.getChannelCode(), "N", 4, "ChannelCode");
 			validateValue(request.getInquiryRequestId(), "AN", 128, "InquiryRequestId");
 
 			BaseResponse inquiryRequest = service.getInquiryByVa(request.getVirtualAccountNo().trim(),
@@ -100,8 +103,8 @@ public class SNAPService {
 			CoreInquiryResp inquiryData = (CoreInquiryResp) inquiryRequest.getData();
 
 			virtualAccountData.setVirtualAccountName(inquiryData.getNama());
-			virtualAccountData.setVirtualAccountEmail(inquiryData.getEmail());
-			virtualAccountData.setVirtualAccountPhone(inquiryData.getNohp());
+//			virtualAccountData.setVirtualAccountEmail(inquiryData.getEmail());
+//			virtualAccountData.setVirtualAccountPhone(inquiryData.getNohp());
 
 			result.setVirtualAccountData(virtualAccountData);
 
@@ -110,11 +113,11 @@ public class SNAPService {
 		} catch (Exception ex) {
 			response = getException(response, ex, "24");
 			SNAPInquiryResp.VirtualAccountData errVirtualAccountData = result.getVirtualAccountData();
-			errVirtualAccountData.setInquiryStatus("01");
+//			errVirtualAccountData.setInquiryStatus("01");
 			SNAPLanguage inquiryReason = new SNAPLanguage();
 			inquiryReason.setEnglish(response.getResponseMessage());
 			inquiryReason.setIndonesia(response.getResponseMessage());
-			errVirtualAccountData.setInquiryReason(inquiryReason);
+//			errVirtualAccountData.setInquiryReason(inquiryReason);
 			result.setVirtualAccountData(errVirtualAccountData);
 			response = result;
 			response = getException(response, ex, "24");
@@ -135,17 +138,26 @@ public class SNAPService {
 		virtualAccountData.setPartnerServiceId(request.getPartnerServiceId());
 		virtualAccountData.setVirtualAccountNo(request.getVirtualAccountNo());
 		virtualAccountData.setInquiryRequestId(request.getInquiryRequestId());
-		virtualAccountData.setPaymentType("");
-		virtualAccountData.setTotalAmount(totalAmount);
-		virtualAccountData.setBillDetails(new ArrayList());
-
+		virtualAccountData.setPaymentRequestId(request.getInquiryRequestId());
+//		virtualAccountData.setPaymentType("");
+//		virtualAccountData.setTotalAmount(totalAmount);
+//		virtualAccountData.setBillDetails(new ArrayList());
+		
+		virtualAccountData.setTransactionDate("20201231T235959Z");
+		
+		SNAPAmount paidAmount = new SNAPAmount();
+		virtualAccountData.setPaidAmount(paidAmount);
 		SNAPLanguage freeText = new SNAPLanguage();
 		freeText.setEnglish("");
 		freeText.setIndonesia("");
 
-		ArrayList<SNAPLanguage> freeTexts = new ArrayList();
-		freeTexts.add(freeText);
-		virtualAccountData.setFreeTexts(freeTexts);
+//		ArrayList<SNAPLanguage> freeTexts = new ArrayList();
+//		freeTexts.add(freeText);
+//		virtualAccountData.setFreeTexts(freeTexts);
+		
+		Map<String, Object> additional = new HashMap();
+		additional.put("channelCode", "402");
+		virtualAccountData.setAdditionalInfo(additional);
 
 		result.setVirtualAccountData(virtualAccountData);
 
@@ -169,14 +181,14 @@ public class SNAPService {
 
 			virtualAccountData.setPaymentRequestId(paymentVirtualAccountData.getPaymentRequestId());
 			virtualAccountData.setPaidAmount(paymentVirtualAccountData.getPaidAmount());
-			virtualAccountData.setTotalAmount(paymentVirtualAccountData.getTotalAmount());
-			virtualAccountData.setTransactionDate(paymentVirtualAccountData.getTrxDateTime());
-			virtualAccountData.setTrxDateTime(paymentVirtualAccountData.getTrxDateTime());
+//			virtualAccountData.setTotalAmount(paymentVirtualAccountData.getTotalAmount());
+//			virtualAccountData.setTransactionDate(paymentVirtualAccountData.getTrxDateTime());
+//			virtualAccountData.setTrxDateTime(paymentVirtualAccountData.getTrxDateTime());
 //			virtualAccountData.setReferenceNo(paymentVirtualAccountData.getReferenceNo());
 //			virtualAccountData.setFlagAdvise(paymentVirtualAccountData.getFlagAdvise());
-			virtualAccountData.setPaymentFlagStatus(paymentVirtualAccountData.getPaymentFlagStatus());
-			virtualAccountData.setBillDetails(paymentVirtualAccountData.getBillDetails());
-			virtualAccountData.setPaidBills(paymentVirtualAccountData.getPaidBills());
+//			virtualAccountData.setPaymentFlagStatus(paymentVirtualAccountData.getPaymentFlagStatus());
+//			virtualAccountData.setBillDetails(paymentVirtualAccountData.getBillDetails());
+//			virtualAccountData.setPaidBills(paymentVirtualAccountData.getPaidBills());
 //			virtualAccountData.setFreeTexts(paymentVirtualAccountData.getFreeTexts());
 
 			result.setVirtualAccountData(virtualAccountData);
@@ -208,21 +220,21 @@ public class SNAPService {
 		virtualAccountData.setPartnerServiceId(request.getPartnerServiceId());
 		virtualAccountData.setCustomerNo(request.getCustomerNo());
 		virtualAccountData.setVirtualAccountNo(request.getVirtualAccountNo());
-		virtualAccountData.setVirtualAccountName(request.getVirtualAccountName());
-		virtualAccountData.setVirtualAccountEmail(request.getVirtualAccountEmail());
-		virtualAccountData.setVirtualAccountPhone(request.getVirtualAccountPhone());
+//		virtualAccountData.setVirtualAccountName(request.getVirtualAccountName());
+//		virtualAccountData.setVirtualAccountEmail(request.getVirtualAccountEmail());
+//		virtualAccountData.setVirtualAccountPhone(request.getVirtualAccountPhone());
 		virtualAccountData.setPaymentRequestId(request.getPaymentRequestId());
 		virtualAccountData.setPaidAmount(request.getPaidAmount());
-		virtualAccountData.setTotalAmount(request.getTotalAmount());
-		virtualAccountData.setTrxDateTime(request.getTrxDateTime());
+//		virtualAccountData.setTotalAmount(request.getTotalAmount());
+//		virtualAccountData.setTrxDateTime(request.getTrxDateTime());
 //		virtualAccountData.setReferenceNo(request.getReferenceNo());
 //		virtualAccountData.setFlagAdvise(request.getFlagAdvise());
-		virtualAccountData.setPaymentFlagStatus("00");
-		virtualAccountData.setBillDetails(request.getBillDetails());
-		virtualAccountData.setPaidBills(request.getPaidBills());
+//		virtualAccountData.setPaymentFlagStatus("00");
+//		virtualAccountData.setBillDetails(request.getBillDetails());
+//		virtualAccountData.setPaidBills(request.getPaidBills());
 //		virtualAccountData.setJournalNum(request.getJournalNum());
 //		virtualAccountData.setFreeTexts(request.getFreeTexts());
-		virtualAccountData.setAdditionalInfo(request.getAdditionalInfo());
+//		virtualAccountData.setAdditionalInfo(request.getAdditionalInfo());
 //		virtualAccountData.setTrxId(request.getTrxId());
 		result.setVirtualAccountData(virtualAccountData);
 
@@ -234,9 +246,9 @@ public class SNAPService {
 			validateValue(request.getPartnerServiceId(), "N", 8, "PartnerServiceId");
 			validateValue(request.getCustomerNo(), "N", 20, "CustomerNo");
 			validateValue(request.getVirtualAccountNo(), "N", 28, "VirtualAccountNo");
-			validateValue(request.getVirtualAccountName(), "AN", 255, "VirtualAccountName");
+//			validateValue(request.getVirtualAccountName(), "AN", 255, "VirtualAccountName");
 			validateValue(request.getPaymentRequestId(), "AN", 128, "PaymentRequestId");
-			validateValue(request.getChannelCode(), "N", 4, "ChannelCode");
+//			validateValue(request.getChannelCode(), "N", 4, "ChannelCode");
 			validateValue(request.getPaidAmount().getValue(), "D", 19, "PaidAmount.Value");
 			validateValue(request.getPaidAmount().getCurrency(), "A", 3, "PaidAmount.Currency");
 
@@ -248,11 +260,11 @@ public class SNAPService {
 		} catch (Exception ex) {
 			response = getException(response, ex, "25");
 			SNAPPaymentResp.VirtualAccountData errVirtualAccountData = result.getVirtualAccountData();
-			errVirtualAccountData.setPaymentFlagStatus("01");
+//			errVirtualAccountData.setPaymentFlagStatus("01");
 			SNAPLanguage paymentReason = new SNAPLanguage();
 			paymentReason.setEnglish(response.getResponseMessage());
 			paymentReason.setIndonesia(response.getResponseMessage());
-			errVirtualAccountData.setPaymentFlagReason(paymentReason);
+//			errVirtualAccountData.setPaymentFlagReason(paymentReason);
 			result.setVirtualAccountData(errVirtualAccountData);
 			response = result;
 			response = getException(response, ex, "25");

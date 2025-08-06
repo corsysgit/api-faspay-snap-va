@@ -161,7 +161,7 @@ public class SNAPController {
 
 	@CrossOrigin
 	@PostMapping("/openapi/v1.0/transfer-va/payment")
-	public ResponseEntity<SNAPResponse> notification(@RequestHeader(value = "CHANNEL-ID") String channelid,
+	public ResponseEntity<SNAPResponse> payment(@RequestHeader(value = "CHANNEL-ID") String channelid,
 			@RequestHeader(value = "X-PARTNER-ID") String partnerid, @RequestHeader("Authorization") String token,
 			@RequestHeader(value = "X-TIMESTAMP") String timestamp,
 			@RequestHeader(value = "X-EXTERNAL-ID") String externalId,
@@ -183,7 +183,7 @@ public class SNAPController {
 				http.getRemoteAddr(),
 				"{\"headers\":" + getHeaders(http) + ",\"body\":" + gson.toJson(request) + "} EXTID" + externalId);
 		return setHeaders(response);
-	}
+	}	
 
 	public SNAPResponse validateRequest(String requestString, String key, String token, String channelid,
 			String partnerid, String timestamp, String externalId, String signature, String code) {

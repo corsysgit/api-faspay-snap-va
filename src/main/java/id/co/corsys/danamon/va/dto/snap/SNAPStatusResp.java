@@ -15,7 +15,7 @@ public class SNAPStatusResp extends SNAPResponse {
 		this.virtualAccountData = virtualAccountData;
 	}
 
-	public static class VirtualAccountData {
+	public static class VirtualAccountData {	       
 		private SNAPLanguage paymentFlagReason = new SNAPLanguage();
 		private String partnerServiceId;
 		private String customerNo;
@@ -23,16 +23,17 @@ public class SNAPStatusResp extends SNAPResponse {
 		private String inquiryRequestId;
 		private String paymentRequestId;
 		private SNAPAmount paidAmount;
-		private String paidBills;
-		private SNAPAmount totalAmount;
-		private String trxDateTime;
+		
+//		private String paidBills;
+//		private SNAPAmount totalAmount;
+//		private String trxDateTime;
 		private String transactionDate;
-		private String referenceNo;
-		private String paymentType;
-		private String flagAdvise;
+//		private String referenceNo;
+//		private String paymentType;
+//		private String flagAdvise;
 		private String paymentFlagStatus;
-		private ArrayList<SNAPBillDetail> billDetails;
-		private ArrayList<SNAPLanguage> freeTexts;
+//		private ArrayList<SNAPBillDetail> billDetails;
+//		private ArrayList<SNAPLanguage> freeTexts;
 		private Map<String, Object> additionalInfo = new HashMap<>();
 
 		public String getInquiryRequestId() {
@@ -51,13 +52,13 @@ public class SNAPStatusResp extends SNAPResponse {
 			this.transactionDate = transactionDate;
 		}
 
-		public String getPaymentType() {
-			return paymentType;
-		}
-
-		public void setPaymentType(String paymentType) {
-			this.paymentType = paymentType;
-		}
+//		public String getPaymentType() {
+//			return paymentType;
+//		}
+//
+//		public void setPaymentType(String paymentType) {
+//			this.paymentType = paymentType;
+//		}
 
 		public SNAPLanguage getPaymentFlagReason() {
 			return paymentFlagReason;
@@ -83,37 +84,37 @@ public class SNAPStatusResp extends SNAPResponse {
 			this.paidAmount = paidAmount;
 		}
 
-		public String getPaidBills() {
-			return paidBills;
-		}
-
-		public void setPaidBills(String paidBills) {
-			this.paidBills = paidBills;
-		}
-
-		public String getTrxDateTime() {
-			return trxDateTime;
-		}
-
-		public void setTrxDateTime(String trxDateTime) {
-			this.trxDateTime = trxDateTime;
-		}
-
-		public String getReferenceNo() {
-			return referenceNo;
-		}
-
-		public void setReferenceNo(String referenceNo) {
-			this.referenceNo = referenceNo;
-		}
-
-		public String getFlagAdvise() {
-			return flagAdvise;
-		}
-
-		public void setFlagAdvise(String flagAdvise) {
-			this.flagAdvise = flagAdvise;
-		}
+//		public String getPaidBills() {
+//			return paidBills;
+//		}
+//
+//		public void setPaidBills(String paidBills) {
+//			this.paidBills = paidBills;
+//		}
+//
+//		public String getTrxDateTime() {
+//			return trxDateTime;
+//		}
+//
+//		public void setTrxDateTime(String trxDateTime) {
+//			this.trxDateTime = trxDateTime;
+//		}
+//
+//		public String getReferenceNo() {
+//			return referenceNo;
+//		}
+//
+//		public void setReferenceNo(String referenceNo) {
+//			this.referenceNo = referenceNo;
+//		}
+//
+//		public String getFlagAdvise() {
+//			return flagAdvise;
+//		}
+//
+//		public void setFlagAdvise(String flagAdvise) {
+//			this.flagAdvise = flagAdvise;
+//		}
 
 		public String getPaymentFlagStatus() {
 			return paymentFlagStatus;
@@ -123,29 +124,29 @@ public class SNAPStatusResp extends SNAPResponse {
 			this.paymentFlagStatus = paymentFlagStatus;
 		}
 
-		public SNAPAmount getTotalAmount() {
-			return totalAmount;
-		}
-
-		public void setTotalAmount(SNAPAmount totalAmount) {
-			this.totalAmount = totalAmount;
-		}
-
-		public ArrayList<SNAPBillDetail> getBillDetails() {
-			return billDetails;
-		}
-
-		public void setBillDetails(ArrayList<SNAPBillDetail> billDetails) {
-			this.billDetails = billDetails;
-		}
-
-		public ArrayList<SNAPLanguage> getFreeTexts() {
-			return freeTexts;
-		}
-
-		public void setFreeTexts(ArrayList<SNAPLanguage> freeTexts) {
-			this.freeTexts = freeTexts;
-		}
+//		public SNAPAmount getTotalAmount() {
+//			return totalAmount;
+//		}
+//
+//		public void setTotalAmount(SNAPAmount totalAmount) {
+//			this.totalAmount = totalAmount;
+//		}
+//
+//		public ArrayList<SNAPBillDetail> getBillDetails() {
+//			return billDetails;
+//		}
+//
+//		public void setBillDetails(ArrayList<SNAPBillDetail> billDetails) {
+//			this.billDetails = billDetails;
+//		}
+//
+//		public ArrayList<SNAPLanguage> getFreeTexts() {
+//			return freeTexts;
+//		}
+//
+//		public void setFreeTexts(ArrayList<SNAPLanguage> freeTexts) {
+//			this.freeTexts = freeTexts;
+//		}
 
 		public Map<String, Object> getAdditionalInfo() {
 			return additionalInfo;

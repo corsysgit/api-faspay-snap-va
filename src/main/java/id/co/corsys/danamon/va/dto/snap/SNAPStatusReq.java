@@ -6,7 +6,7 @@ public class SNAPStatusReq {
 	private String virtualAccountNo = "";
 	private SNAPAdditionalInfo additionalInfo = new SNAPAdditionalInfo();
 	private String inquiryRequestId = "";
-	private String paymentRequestId = "";
+//	private String paymentRequestId = "";
 
 	public String getPartnerServiceId() {
 		return partnerServiceId;
@@ -48,12 +48,12 @@ public class SNAPStatusReq {
 		this.inquiryRequestId = inquiryRequestId;
 	}
 
-	public String getPaymentRequestId() {
-		return paymentRequestId;
-	}
-
-	public void setPaymentRequestId(String paymentRequestId) {
-		this.paymentRequestId = paymentRequestId;
-	}
+//	public String getPaymentRequestId() {
+//		return paymentRequestId;
+//	}
+//
+//	public void setPaymentRequestId(String paymentRequestId) {
+//		this.paymentRequestId = paymentRequestId;
+//	}
 
 }

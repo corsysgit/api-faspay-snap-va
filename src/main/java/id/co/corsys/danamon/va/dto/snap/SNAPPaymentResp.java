@@ -16,21 +16,21 @@ public class SNAPPaymentResp extends SNAPResponse {
 	}
 
 	public static class VirtualAccountData extends SNAPVirtualAccountData {
-		private SNAPLanguage paymentFlagReason = new SNAPLanguage();
+//		private SNAPLanguage paymentFlagReason = new SNAPLanguage();
 		private String paymentRequestId;
 		private SNAPAmount paidAmount;
-		private String paidBills;
-		private String trxDateTime;
-		private String paymentFlagStatus;
+//		private String paidBills;
+//		private String trxDateTime;
+//		private String paymentFlagStatus;
 
-		public SNAPLanguage getPaymentFlagReason() {
-			return paymentFlagReason;
-		}
-
-		public void setPaymentFlagReason(SNAPLanguage paymentFlagReason) {
-			this.paymentFlagReason = paymentFlagReason;
-		}
-
+//		public SNAPLanguage getPaymentFlagReason() {
+//			return paymentFlagReason;
+//		}
+//
+//		public void setPaymentFlagReason(SNAPLanguage paymentFlagReason) {
+//			this.paymentFlagReason = paymentFlagReason;
+//		}
+//
 		public String getPaymentRequestId() {
 			return paymentRequestId;
 		}
@@ -47,29 +47,29 @@ public class SNAPPaymentResp extends SNAPResponse {
 			this.paidAmount = paidAmount;
 		}
 
-		public String getPaidBills() {
-			return paidBills;
-		}
-
-		public void setPaidBills(String paidBills) {
-			this.paidBills = paidBills;
-		}
-
-		public String getTrxDateTime() {
-			return trxDateTime;
-		}
-
-		public void setTrxDateTime(String trxDateTime) {
-			this.trxDateTime = trxDateTime;
-		}
-
-		public String getPaymentFlagStatus() {
-			return paymentFlagStatus;
-		}
-
-		public void setPaymentFlagStatus(String paymentFlagStatus) {
-			this.paymentFlagStatus = paymentFlagStatus;
-		}
+//		public String getPaidBills() {
+//			return paidBills;
+//		}
+//
+//		public void setPaidBills(String paidBills) {
+//			this.paidBills = paidBills;
+//		}
+//
+//		public String getTrxDateTime() {
+//			return trxDateTime;
+//		}
+//
+//		public void setTrxDateTime(String trxDateTime) {
+//			this.trxDateTime = trxDateTime;
+//		}
+//
+//		public String getPaymentFlagStatus() {
+//			return paymentFlagStatus;
+//		}
+//
+//		public void setPaymentFlagStatus(String paymentFlagStatus) {
+//			this.paymentFlagStatus = paymentFlagStatus;
+//		}
 
 	}
 }
