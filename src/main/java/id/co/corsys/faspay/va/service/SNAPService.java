@@ -67,11 +67,12 @@ public class SNAPService {
 		totalAmount.setValue("0.00");
 		SNAPAmount feeAmount = new SNAPAmount();
 		feeAmount.setValue("0.00");
+
 		SNAPInquiryResp.VirtualAccountData virtualAccountData = new SNAPInquiryResp.VirtualAccountData();
 		virtualAccountData.setCustomerNo(request.getCustomerNo());
 		virtualAccountData.setPartnerServiceId(request.getPartnerServiceId());
 		virtualAccountData.setVirtualAccountNo(request.getVirtualAccountNo());
-//		virtualAccountData.setInquiryRequestId(request.getInquiryRequestId());
+		virtualAccountData.setInquiryRequestId(request.getInquiryRequestId());
 //		virtualAccountData.setTotalAmount(totalAmount);
 //		virtualAccountData.setFeeAmount(feeAmount);
 //		virtualAccountData.setBillDetails(new ArrayList());
@@ -82,7 +83,6 @@ public class SNAPService {
 //		freeTexts.add(freeText);
 //		virtualAccountData.setFreeTexts(freeTexts);
 		result.setVirtualAccountData(virtualAccountData);
-		virtualAccountData.setInquiryRequestId(request.getInquiryRequestId());
 
 		response = result;
 
@@ -255,6 +255,11 @@ public class SNAPService {
 			BaseResponse payment = service.postPaymentBca(request);
 			if (!payment.getStatus().matches("00"))
 				throw new Exception(payment.getMessage());
+
+			virtualAccountData
+					.setVirtualAccountName(dao.getNasabahByVa(request.getVirtualAccountNo()).get("ALIASNM") + "");
+			result.setVirtualAccountData(virtualAccountData);
+			response = result;
 
 			response.setResponseCode("2002500");
 		} catch (Exception ex) {

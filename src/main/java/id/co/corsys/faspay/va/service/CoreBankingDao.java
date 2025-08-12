@@ -289,7 +289,8 @@ public class CoreBankingDao {
 
 	public Map<String, Object> getNasabahByVa(String va) throws Exception {
 		List<Map<String, Object>> nasabah = jdbcTemplate.queryForList(
-				"SELECT S.NOAC, S.KDCAB, R.KDBANK, R.STATUS FROM RETV100 R INNER JOIN SHDBLC S ON S.NOAC = R.NOAC WHERE R.NOAC_VIRTUAL = ? AND R.STATUS = 1",
+				"SELECT S.ALIASNM, S.NOAC, S.KDCAB, R.KDBANK, R.STATUS FROM RETV100 R"
+						+ " INNER JOIN SHDBLC S ON S.NOAC = R.NOAC WHERE R.NOAC_VIRTUAL = ? AND R.STATUS = 1",
 				new Object[] { va });
 
 		if (nasabah.isEmpty()) {
