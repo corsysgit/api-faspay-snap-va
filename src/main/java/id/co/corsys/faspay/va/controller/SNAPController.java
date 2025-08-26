@@ -118,13 +118,13 @@ public class SNAPController {
 		SNAPResponse response = new SNAPResponse();
 
 		SNAPInquiryReq request = gson.fromJson(requestString, SNAPInquiryReq.class);
-//		SNAPResponse errResponse = validateRequest(requestString, null, token, channelid, partnerid, timestamp,
-//				externalId, signature, "24");
-//		if (errResponse == null) {
-		response = service.getInquiry(request, externalId);
-//		} else {
-//			response = errResponse;
-//		}
+		SNAPResponse errResponse = validateRequest(requestString, null, token, channelid, partnerid, timestamp,
+				externalId, signature, "24");
+		if (errResponse == null) {
+			response = service.getInquiry(request, externalId);
+		} else {
+			response = errResponse;
+		}
 
 		dao.saveLog(http.getRequestURL().toString() + "?" + http.getQueryString(), gson.toJson(response),
 				http.getRemoteAddr(),
@@ -208,7 +208,7 @@ public class SNAPController {
 				}
 			}
 
-			if (!code.matches("73")) {
+			if (!code.matches("73") && false) {
 				try {
 //					validateValue(channelid, "AN", 4, "CHANNEL-ID");
 //					validateValue(partnerid, "AN", 32, "X-PARTNER-ID");
