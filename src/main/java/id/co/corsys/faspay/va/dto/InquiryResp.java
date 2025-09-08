@@ -15,7 +15,7 @@
  ******************************************************************************/
 package id.co.corsys.faspay.va.dto;
 
-public class CoreInquiryResp {
+public class InquiryResp {
 	private String nama;
 	private String jenis;
 	private String kdcab;

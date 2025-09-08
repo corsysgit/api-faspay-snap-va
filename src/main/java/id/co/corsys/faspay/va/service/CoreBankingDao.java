@@ -45,14 +45,17 @@ import id.co.corsys.faspay.va.domain.InquiryProcedure3;
 import id.co.corsys.faspay.va.domain.TransactionProcedure;
 import id.co.corsys.faspay.va.domain.TransactionProcedure2;
 import id.co.corsys.faspay.va.dto.BaseResponse;
-import id.co.corsys.faspay.va.dto.CoreInquiryResp;
-import id.co.corsys.faspay.va.dto.CorePaymentReq;
-import id.co.corsys.faspay.va.dto.CoreVAResp;
+import id.co.corsys.faspay.va.dto.InquiryResp;
+import id.co.corsys.faspay.va.dto.PaymentReq;
+import id.co.corsys.faspay.va.dto.PaymentResp;
 import id.co.corsys.faspay.va.helper.CorSysEncoder;
 import id.co.corsys.faspay.va.helper.ProductLicense;
 
 @Repository
 public class CoreBankingDao {
+	@Value("${product.license}")
+	private String license;
+	
 	private JdbcTemplate jdbcTemplate;
 	private JdbcTemplate shadowJdbcTemplate;
 
@@ -186,6 +189,15 @@ public class CoreBankingDao {
 		return CorSysEncoder.fencrypthexa(a, b, c);
 	}
 
+	public boolean getLicense() {
+		String myLicense = generateLicense();
+		if (myLicense.equals(license)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public String printLicense() {
 		String myLicense = generateLicense();
 		return myLicense;
@@ -315,8 +327,8 @@ public class CoreBankingDao {
 		return (!biaya.isEmpty() && biaya.get(0) != null) ? biaya.get(0) + "" : "0";
 	}
 
-	public CoreInquiryResp getInquiry2(String no_rek, String tcd, String noref) throws Exception {
-		CoreInquiryResp response = new CoreInquiryResp();
+	public InquiryResp getInquiry2(String no_rek, String tcd, String noref) throws Exception {
+		InquiryResp response = new InquiryResp();
 
 		Map<String, Object> params = new HashMap<String, Object>() {
 			private static final long serialVersionUID = 1L;
@@ -354,8 +366,8 @@ public class CoreBankingDao {
 		return response;
 	}
 
-	public CoreVAResp postPayment(CorePaymentReq payment, String jenisTransaksi) throws Exception {
-		CoreVAResp vaResponse = new CoreVAResp();
+	public PaymentResp postPayment(PaymentReq payment, String jenisTransaksi) throws Exception {
+		PaymentResp vaResponse = new PaymentResp();
 		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		String jenis, ket, noref, reff;
 		Map<String, Object> params = null;

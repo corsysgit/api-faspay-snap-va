@@ -11,8 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import id.co.corsys.faspay.va.constant.CorSys;
 import id.co.corsys.faspay.va.dto.BaseResponse;
-import id.co.corsys.faspay.va.dto.CoreNotificationReq;
-import id.co.corsys.faspay.va.dto.CorePaymentReq;
+import id.co.corsys.faspay.va.dto.NotificationReq;
+import id.co.corsys.faspay.va.dto.NotificationResp;
+import id.co.corsys.faspay.va.dto.PaymentReq;
 import id.co.corsys.faspay.va.dto.snap.SNAPPaymentReq;
 
 @Repository
@@ -78,7 +79,7 @@ public class CoreBankingService {
 		return null;
 	}
 
-	public BaseResponse validateTransfer(CorePaymentReq payment) {
+	public BaseResponse validateTransfer(PaymentReq payment) {
 		BaseResponse result = new BaseResponse();
 
 		if (validateAPI(payment.getUser_id()) != null)
@@ -102,7 +103,7 @@ public class CoreBankingService {
 		return null;
 	}
 
-	public BaseResponse postPayment(CorePaymentReq payment, String jenisTransaksi) {
+	public BaseResponse postPayment(PaymentReq payment, String jenisTransaksi) {
 		BaseResponse result = new BaseResponse();
 
 		if (validateTransfer(payment) != null)
@@ -149,7 +150,30 @@ public class CoreBankingService {
 				noref);
 	}
 
-	public BaseResponse postPaymentByVa(CoreNotificationReq request) {
+	public NotificationResp postPayment(NotificationReq body) throws Exception {
+		NotificationResp response = new NotificationResp();
+
+		if (!dao.getLicense())
+			throw new Exception("LICENSE NOT REGISTERED");
+
+		if (!body.getPayment_status_code().matches("2") && !body.getPayment_status_code().matches("4"))
+			throw new Exception("INVALID PAYMENT CODE");
+
+		body.setPayment_total(body.getPayment_total().replaceAll(",", "."));
+		body.setBill_total(body.getBill_total().replaceAll(",", "."));
+
+		response.setBill_no(body.getBill_no());
+		response.setMerchant_id(body.getMerchant_id());
+		response.setTrx_id(body.getTrx_id());
+
+		BaseResponse payment = postPaymentByVa(body);
+		if (!payment.getStatus().matches("00"))
+			throw new Exception(payment.getMessage());
+
+		return response;
+	}
+
+	public BaseResponse postPaymentByVa(NotificationReq request) {
 		Map<String, Object> nasabah = new HashMap<String, Object>();
 		BaseResponse error = new BaseResponse();
 		try {
@@ -160,7 +184,7 @@ public class CoreBankingService {
 			return error;
 		}
 
-		CorePaymentReq payment = new CorePaymentReq();
+		PaymentReq payment = new PaymentReq();
 		payment.setAmount(request.getPayment_total());
 		payment.setBill_no(request.getBill_no());
 		payment.setMerchant_id(request.getMerchant_id());
@@ -196,7 +220,7 @@ public class CoreBankingService {
 			return error;
 		}
 
-		CorePaymentReq payment = new CorePaymentReq();
+		PaymentReq payment = new PaymentReq();
 		payment.setAmount(request.getPaidAmount().getValue());
 		payment.setBill_no(request.getVirtualAccountNo().trim());
 		payment.setPayment_date(request.getTrxDateTime());

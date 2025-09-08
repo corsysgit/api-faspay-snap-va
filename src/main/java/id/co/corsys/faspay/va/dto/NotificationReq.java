@@ -1,6 +1,6 @@
 package id.co.corsys.faspay.va.dto;
 
-public class CoreNotificationReq {
+public class NotificationReq {
 	private String request;
 	private String trx_id;
 	private String merchant_id;

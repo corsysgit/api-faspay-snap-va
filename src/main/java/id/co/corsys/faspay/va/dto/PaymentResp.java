@@ -15,7 +15,7 @@
  ******************************************************************************/
 package id.co.corsys.faspay.va.dto;
 
-public class CoreVAResp {
+public class PaymentResp {
 	private String tglval;
 
 	public String getTglval() {

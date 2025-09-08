@@ -170,13 +170,13 @@ public class SNAPController {
 		SNAPResponse response = new SNAPResponse();
 		SNAPPaymentReq request = gson.fromJson(requestString, SNAPPaymentReq.class);
 
-//		SNAPResponse errResponse = validateRequest(requestString, null, token, channelid, partnerid, timestamp,
-//				externalId, signature, "25");
-//		if (errResponse == null) {
-		response = service.postPayment(request, externalId);
-//		} else {
-//			response = errResponse;
-//		}
+		SNAPResponse errResponse = validateRequest(requestString, null, token, channelid, partnerid, timestamp,
+				externalId, signature, "25");
+		if (errResponse == null) {
+			response = service.postPayment(request, externalId);
+		} else {
+			response = errResponse;
+		}
 
 		dao.saveLog(http.getRequestURL().toString() + "?" + http.getQueryString(), gson.toJson(response),
 				http.getRemoteAddr(),
@@ -249,7 +249,7 @@ public class SNAPController {
 							url = "status";
 						}
 
-						String plainsign = "POST:" + "/api-server-danamon-va-" + environment
+						String plainsign = "POST:" + "/api-server-faspay-va-" + environment
 								+ "/openapi/v1.0/transfer-va/" + url + ":" + token.replaceAll("Bearer ", "") + ":"
 								+ (EncoderHelper.sha256(EncoderHelper.minifyJson(requestString))).toLowerCase() + ":"
 								+ timestamp;

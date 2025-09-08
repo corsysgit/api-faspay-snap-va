@@ -16,8 +16,8 @@ import org.springframework.stereotype.Repository;
 import com.google.gson.Gson;
 
 import id.co.corsys.faspay.va.dto.BaseResponse;
-import id.co.corsys.faspay.va.dto.CoreInquiryResp;
-import id.co.corsys.faspay.va.dto.CoreNotificationReq;
+import id.co.corsys.faspay.va.dto.InquiryResp;
+import id.co.corsys.faspay.va.dto.NotificationReq;
 import id.co.corsys.faspay.va.dto.NotificationResp;
 import id.co.corsys.faspay.va.dto.snap.SNAPAdditionalInfo;
 import id.co.corsys.faspay.va.dto.snap.SNAPAmount;
@@ -100,7 +100,7 @@ public class SNAPService {
 					request.getInquiryRequestId());
 			if (!inquiryRequest.getStatus().matches("00"))
 				throw new Exception(inquiryRequest.getMessage());
-			CoreInquiryResp inquiryData = (CoreInquiryResp) inquiryRequest.getData();
+			InquiryResp inquiryData = (InquiryResp) inquiryRequest.getData();
 
 			virtualAccountData.setVirtualAccountName(inquiryData.getNama());
 //			virtualAccountData.setVirtualAccountEmail(inquiryData.getEmail());
@@ -252,9 +252,16 @@ public class SNAPService {
 			validateValue(request.getPaidAmount().getValue(), "D", 19, "PaidAmount.Value");
 			validateValue(request.getPaidAmount().getCurrency(), "A", 3, "PaidAmount.Currency");
 
-			BaseResponse payment = service.postPaymentBca(request);
-			if (!payment.getStatus().matches("00"))
-				throw new Exception(payment.getMessage());
+//			BaseResponse payment = service.postPaymentBca(request);
+//			if (!payment.getStatus().matches("00"))
+//				throw new Exception(payment.getMessage());
+
+			Double min = dao.getMinTrx();
+			Double max = dao.getMaxTrx();
+			if (Double.parseDouble(request.getPaidAmount().getValue()) < min)
+				throw new Exception("invalid amount");
+			if (Double.parseDouble(request.getPaidAmount().getValue()) > max)
+				throw new Exception("invalid amount");
 
 			virtualAccountData
 					.setVirtualAccountName(dao.getNasabahByVa(request.getVirtualAccountNo()).get("ALIASNM") + "");
