@@ -46,18 +46,18 @@ public class SNAPService {
 
 	Gson gson = new Gson();
 
-	public SNAPResponse getToken() {
-		SNAPResponse response = new SNAPResponse();
-		SNAPToken token = new SNAPToken();
-		try {
-			token = oauth.getToken();
-			response = token;
-			response.setResponseCode("2007300");
-		} catch (Exception ex) {
-			response = getException(response, ex, "73");
-		}
-		return response;
-	}
+//	public SNAPResponse getToken() {
+//		SNAPResponse response = new SNAPResponse();
+//		SNAPToken token = new SNAPToken();
+//		try {
+//			token = oauth.getToken();
+//			response = token;
+//			response.setResponseCode("2007300");
+//		} catch (Exception ex) {
+//			response = getException(response, ex, "73");
+//		}
+//		return response;
+//	}
 
 	public SNAPResponse getInquiry(SNAPInquiryReq request, String externalId) {
 		SNAPResponse response = new SNAPResponse();
@@ -73,7 +73,8 @@ public class SNAPService {
 		virtualAccountData.setPartnerServiceId(request.getPartnerServiceId());
 		virtualAccountData.setVirtualAccountNo(request.getVirtualAccountNo());
 		virtualAccountData.setInquiryRequestId(request.getInquiryRequestId());
-//		virtualAccountData.setTotalAmount(totalAmount);
+		virtualAccountData.setTotalAmount(totalAmount);
+
 //		virtualAccountData.setFeeAmount(feeAmount);
 //		virtualAccountData.setBillDetails(new ArrayList());
 //		SNAPLanguage freeText = new SNAPLanguage();
@@ -82,6 +83,7 @@ public class SNAPService {
 //		ArrayList<SNAPLanguage> freeTexts = new ArrayList();
 //		freeTexts.add(freeText);
 //		virtualAccountData.setFreeTexts(freeTexts);
+
 		result.setVirtualAccountData(virtualAccountData);
 
 		response = result;
@@ -103,8 +105,8 @@ public class SNAPService {
 			InquiryResp inquiryData = (InquiryResp) inquiryRequest.getData();
 
 			virtualAccountData.setVirtualAccountName(inquiryData.getNama());
-//			virtualAccountData.setVirtualAccountEmail(inquiryData.getEmail());
-//			virtualAccountData.setVirtualAccountPhone(inquiryData.getNohp());
+			virtualAccountData.setVirtualAccountEmail(inquiryData.getEmail());
+			virtualAccountData.setVirtualAccountPhone(inquiryData.getNohp());
 
 			result.setVirtualAccountData(virtualAccountData);
 
@@ -143,7 +145,7 @@ public class SNAPService {
 //		virtualAccountData.setTotalAmount(totalAmount);
 //		virtualAccountData.setBillDetails(new ArrayList());
 
-		virtualAccountData.setTransactionDate("20201231T235959Z");
+//		virtualAccountData.setTransactionDate("20201231T235959Z");
 
 		SNAPAmount paidAmount = new SNAPAmount();
 		virtualAccountData.setPaidAmount(paidAmount);
@@ -263,8 +265,16 @@ public class SNAPService {
 			if (Double.parseDouble(request.getPaidAmount().getValue()) > max)
 				throw new Exception("invalid amount");
 
-			virtualAccountData
-					.setVirtualAccountName(dao.getNasabahByVa(request.getVirtualAccountNo()).get("ALIASNM") + "");
+			BaseResponse inquiryRequest = service.getInquiryByVa(request.getVirtualAccountNo().trim(),
+					request.getPaymentRequestId());
+			if (!inquiryRequest.getStatus().matches("00"))
+				throw new Exception(inquiryRequest.getMessage());
+			InquiryResp inquiryData = (InquiryResp) inquiryRequest.getData();
+
+			virtualAccountData.setVirtualAccountName(inquiryData.getNama());
+			virtualAccountData.setVirtualAccountEmail(inquiryData.getEmail());
+			virtualAccountData.setVirtualAccountPhone(inquiryData.getNohp());
+
 			result.setVirtualAccountData(virtualAccountData);
 			response = result;
 
@@ -316,8 +326,9 @@ public class SNAPService {
 		if (response.getResponseCode() == null) {
 			response.setResponseCode("500" + code + "00");
 			response.setResponseMessage("General Error");
-			System.out.println(ex.getLocalizedMessage());
 		}
+
+		System.out.println(ex.getLocalizedMessage());
 
 		return response;
 	}

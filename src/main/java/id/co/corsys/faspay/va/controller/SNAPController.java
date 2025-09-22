@@ -50,11 +50,11 @@ import id.co.corsys.faspay.va.service.SNAPService;
 
 @RestController
 public class SNAPController {
-	@Value("${snap.credential.client.id}")
-	private String clientId;
-
-	@Value("${snap.credential.client.secret}")
-	private String clientSecret;
+//	@Value("${snap.credential.client.id}")
+//	private String clientId;
+//
+//	@Value("${snap.credential.client.secret}")
+//	private String clientSecret;
 
 	@Value("${snap.credential.public.key}")
 	private String publicKey;
@@ -62,8 +62,8 @@ public class SNAPController {
 	@Value("${api.auth}")
 	private String isAuthOn;
 
-	@Value("${api.env}")
-	private String environment;
+//	@Value("${api.env}")
+//	private String environment;
 
 	@Autowired
 	CoreBankingDao dao;
@@ -88,24 +88,24 @@ public class SNAPController {
 		return response;
 	}
 
-	@CrossOrigin
-	@PostMapping("/openapi/v1.0/access-token/b2b")
-	public ResponseEntity<SNAPResponse> requestToken(@RequestBody SNAPTokenReq request,
-			@RequestHeader(value = "X-TIMESTAMP") String timestamp, @RequestHeader(value = "X-CLIENT-KEY") String key,
-			@RequestHeader(value = "X-SIGNATURE") String signature, HttpServletRequest http) {
-		SNAPResponse response = new SNAPResponse();
-
-		SNAPResponse errResponse = validateRequest(null, key, null, null, null, timestamp, null, signature, "73");
-		if (errResponse == null) {
-			response = service.getToken();
-		} else {
-			response = errResponse;
-		}
-
-		dao.saveLog(http.getRequestURL().toString() + "?" + http.getQueryString(), gson.toJson(response),
-				http.getRemoteAddr(), "{\"headers\":" + getHeaders(http) + ",\"body\":" + gson.toJson(request) + "}");
-		return setHeaders(response);
-	}
+//	@CrossOrigin
+//	@PostMapping("/openapi/v1.0/access-token/b2b")
+//	public ResponseEntity<SNAPResponse> requestToken(@RequestBody SNAPTokenReq request,
+//			@RequestHeader(value = "X-TIMESTAMP") String timestamp, @RequestHeader(value = "X-CLIENT-KEY") String key,
+//			@RequestHeader(value = "X-SIGNATURE") String signature, HttpServletRequest http) {
+//		SNAPResponse response = new SNAPResponse();
+//
+//		SNAPResponse errResponse = validateRequest(null, key, null, null, null, timestamp, null, signature, "73");
+//		if (errResponse == null) {
+//			response = service.getToken();
+//		} else {
+//			response = errResponse;
+//		}
+//
+//		dao.saveLog(http.getRequestURL().toString() + "?" + http.getQueryString(), gson.toJson(response),
+//				http.getRemoteAddr(), "{\"headers\":" + getHeaders(http) + ",\"body\":" + gson.toJson(request) + "}");
+//		return setHeaders(response);
+//	}
 
 	@CrossOrigin
 	@PostMapping("/openapi/v1.0/transfer-va/inquiry")
@@ -113,12 +113,13 @@ public class SNAPController {
 			@RequestHeader(value = "X-PARTNER-ID") String partnerid, @RequestBody String requestString,
 			@RequestHeader(value = "X-TIMESTAMP") String timestamp,
 			@RequestHeader(value = "X-EXTERNAL-ID") String externalId,
-			@RequestHeader(value = "X-SIGNATURE") String signature, @RequestHeader("Authorization") String token,
+			@RequestHeader(value = "X-SIGNATURE") String signature,
+//			@RequestHeader("Authorization") String token,
 			HttpServletRequest http) {
 		SNAPResponse response = new SNAPResponse();
 
 		SNAPInquiryReq request = gson.fromJson(requestString, SNAPInquiryReq.class);
-		SNAPResponse errResponse = validateRequest(requestString, null, token, channelid, partnerid, timestamp,
+		SNAPResponse errResponse = validateRequest(requestString, null, null, channelid, partnerid, timestamp,
 				externalId, signature, "24");
 		if (errResponse == null) {
 			response = service.getInquiry(request, externalId);
@@ -139,12 +140,12 @@ public class SNAPController {
 			@RequestHeader(value = "X-TIMESTAMP") String timestamp,
 			@RequestHeader(value = "X-EXTERNAL-ID") String externalId,
 			@RequestHeader(value = "X-SIGNATURE") String signature,
-
-			@RequestHeader("Authorization") String token, HttpServletRequest http) {
+//			@RequestHeader("Authorization") String token,
+			HttpServletRequest http) {
 		SNAPResponse response = new SNAPResponse();
 
 		SNAPStatusReq request = gson.fromJson(requestString, SNAPStatusReq.class);
-		SNAPResponse errResponse = validateRequest(requestString, null, token, channelid, partnerid, timestamp,
+		SNAPResponse errResponse = validateRequest(requestString, null, null, channelid, partnerid, timestamp,
 				externalId, signature, "26");
 		if (errResponse == null) {
 			response = service.getStatus(request, externalId);
@@ -161,16 +162,16 @@ public class SNAPController {
 	@CrossOrigin
 	@PostMapping("/openapi/v1.0/transfer-va/payment")
 	public ResponseEntity<SNAPResponse> payment(@RequestHeader(value = "CHANNEL-ID") String channelid,
-			@RequestHeader(value = "X-PARTNER-ID") String partnerid, @RequestHeader("Authorization") String token,
+			@RequestHeader(value = "X-PARTNER-ID") String partnerid,
+//			@RequestHeader("Authorization") String token,
 			@RequestHeader(value = "X-TIMESTAMP") String timestamp,
 			@RequestHeader(value = "X-EXTERNAL-ID") String externalId,
-			@RequestHeader(value = "X-SIGNATURE") String signature,
-
-			@RequestBody String requestString, HttpServletRequest http) {
+			@RequestHeader(value = "X-SIGNATURE") String signature, @RequestBody String requestString,
+			HttpServletRequest http) {
 		SNAPResponse response = new SNAPResponse();
 		SNAPPaymentReq request = gson.fromJson(requestString, SNAPPaymentReq.class);
 
-		SNAPResponse errResponse = validateRequest(requestString, null, token, channelid, partnerid, timestamp,
+		SNAPResponse errResponse = validateRequest(requestString, null, null, channelid, partnerid, timestamp,
 				externalId, signature, "25");
 		if (errResponse == null) {
 			response = service.postPayment(request, externalId);
@@ -202,30 +203,30 @@ public class SNAPController {
 					response.setResponseCode("404" + code + "01");
 					throw new Exception(ex.getLocalizedMessage());
 				}
-				if (!key.matches(clientId)) {
-					response.setResponseCode("401" + code + "00");
-					throw new Exception("Unauthorized [Unknown client]");
-				}
+//				if (!key.matches(clientId)) {
+//					response.setResponseCode("401" + code + "00");
+//					throw new Exception("Unauthorized [Unknown client]");
+//				}
 			}
 
 			if (!code.matches("73") && false) {
-				try {
+//				try {
 //					validateValue(channelid, "AN", 4, "CHANNEL-ID");
 //					validateValue(partnerid, "AN", 32, "X-PARTNER-ID");
 //					validateValue(externalId, "AN", 36, "X-EXTERNAL-ID");
-				} catch (Exception ex) {
-					response.setResponseCode("404" + code + "01");
-					throw new Exception(ex.getLocalizedMessage());
-				}
+//				} catch (Exception ex) {
+//					response.setResponseCode("404" + code + "01");
+//					throw new Exception(ex.getLocalizedMessage());
+//				}
 
-				try {
-					if (!oauth.isTokenValid(token)) {
-						throw new Exception();
-					}
-				} catch (Exception ex) {
-					response.setResponseCode("401" + code + "01");
-					throw new Exception("Access Token Invalid");
-				}
+//				try {
+//					if (!oauth.isTokenValid(token)) {
+//						throw new Exception();
+//					}
+//				} catch (Exception ex) {
+//					response.setResponseCode("401" + code + "01");
+//					throw new Exception("Access Token Invalid");
+//				}
 			}
 
 			try {
@@ -249,14 +250,31 @@ public class SNAPController {
 							url = "status";
 						}
 
-						String plainsign = "POST:" + "/api-server-faspay-va-" + environment
-								+ "/openapi/v1.0/transfer-va/" + url + ":" + token.replaceAll("Bearer ", "") + ":"
+						String plainsign = "POST:"
+//								+ "/api-server-faspay-va-" + environment
+								+ "/v1.0/transfer-va/" + url + ":"
+//								+ token.replaceAll("Bearer ", "") + ":"
 								+ (EncoderHelper.sha256(EncoderHelper.minifyJson(requestString))).toLowerCase() + ":"
 								+ timestamp;
-						String mySignature = EncoderHelper
-								.hashMac512(CorsysPasswordEncoder.decode(clientId, clientSecret), plainsign);
 
-						if (!mySignature.equals(signature)) {
+//						String mySignature = EncoderHelper
+//								.hashMac512(CorsysPasswordEncoder.decode(clientId, clientSecret), plainsign);
+//						
+//						if (!mySignature.equals(signature)) {
+//							throw new Exception();
+//						}
+
+						System.out.println(plainsign);
+						System.out.println(signature);
+						System.out.println(dao.getDirUpload() + publicKey);
+
+						boolean isValid = false;
+						try {
+							isValid = encoder.verifyRSASignature(plainsign, signature, dao.getDirUpload() + publicKey);
+						} catch (Exception ex) {
+							System.out.println(ex.getLocalizedMessage());
+						}
+						if (!isValid) {
 							throw new Exception();
 						}
 					} else if (code.matches("73")) {
@@ -286,6 +304,9 @@ public class SNAPController {
 				"X-TIMESTAMP,X-CLIENT-KEY,X-CLIENT-SECRET,"
 						+ "Content-Type,X-SIGNATURE,Accept,Authorization,Authorization-Customer,ORIGIN,"
 						+ "X-PARTNER-ID,X-EXTERNAL-ID,X-IP-ADDRESS,X-DEVICE-ID,CHANNEL-ID,X-LATITUDE,X-LONGITUDE");
+		if (response.getResponseMessage().toLowerCase().contains("invalid field format")) {
+			response.setResponseCode("400" + response.getResponseCode().substring(3));
+		}
 		return new ResponseEntity<SNAPResponse>(response, headers, HttpStatus.OK);
 	}
 
@@ -310,9 +331,7 @@ public class SNAPController {
 			if (value.length() > length) {
 				throw new Exception();
 			}
-		} catch (
-
-		Exception ex) {
+		} catch (Exception ex) {
 			throw new Exception("Invalid Field Format {" + key + "}");
 		}
 	}

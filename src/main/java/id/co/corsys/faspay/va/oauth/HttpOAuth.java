@@ -23,8 +23,8 @@ import id.co.corsys.faspay.va.helper.HttpClientFactory;
 
 @Repository
 public class HttpOAuth {
-	@Value("${oauth.url}")
-	private String BASE_URL;
+//	@Value("${oauth.url}")
+//	private String BASE_URL;
 
 	HttpClientFactory clientFactory = new HttpClientFactory();
 	private final String USER_AGENT = "Mozilla/5.0";
@@ -67,34 +67,34 @@ public class HttpOAuth {
 		return httpEntity;
 	}
 
-	public String getToken(String client, String secret) throws Exception {
-		String response = null;
-		String url = BASE_URL + "/oauth/token";
-
-		CloseableHttpClient httpClient = clientFactory.getHttpsClient();
-		HttpPost httpEntity = buildPostEntity(url, client, secret);
-
-		List<NameValuePair> form = new ArrayList<>();
-		form.add(new BasicNameValuePair("grant_type", "client_credentials"));
-		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(form, Consts.UTF_8);
-		httpEntity.setEntity(entity);
-
-		CloseableHttpResponse httpResponse = httpClient.execute(httpEntity);
-		response = buildResponse(httpResponse);
-
-		return response;
-	}
-
-	public String validateToken(String token) throws Exception {
-		String response = null;
-		String url = BASE_URL + "/oauth/validate";
-
-		CloseableHttpClient httpClient = clientFactory.getHttpsClient();
-		HttpGet httpEntity = buildGetEntity(url, token);
-
-		CloseableHttpResponse httpResponse = httpClient.execute(httpEntity);
-		response = buildResponse(httpResponse);
-
-		return response;
-	}
+//	public String getToken(String client, String secret) throws Exception {
+//		String response = null;
+//		String url = BASE_URL + "/oauth/token";
+//
+//		CloseableHttpClient httpClient = clientFactory.getHttpsClient();
+//		HttpPost httpEntity = buildPostEntity(url, client, secret);
+//
+//		List<NameValuePair> form = new ArrayList<>();
+//		form.add(new BasicNameValuePair("grant_type", "client_credentials"));
+//		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(form, Consts.UTF_8);
+//		httpEntity.setEntity(entity);
+//
+//		CloseableHttpResponse httpResponse = httpClient.execute(httpEntity);
+//		response = buildResponse(httpResponse);
+//
+//		return response;
+//	}
+//
+//	public String validateToken(String token) throws Exception {
+//		String response = null;
+//		String url = BASE_URL + "/oauth/validate";
+//
+//		CloseableHttpClient httpClient = clientFactory.getHttpsClient();
+//		HttpGet httpEntity = buildGetEntity(url, token);
+//
+//		CloseableHttpResponse httpResponse = httpClient.execute(httpEntity);
+//		response = buildResponse(httpResponse);
+//
+//		return response;
+//	}
 }

@@ -2,7 +2,7 @@ package id.co.corsys.faspay.va.dto.snap;
 
 public class SNAPResponse {
 	private String responseCode;
-	private String responseMessage = "Successful";
+	private String responseMessage = "Success";
 
 	public String getResponseCode() {
 		return responseCode;

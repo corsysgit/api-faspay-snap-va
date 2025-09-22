@@ -17,29 +17,29 @@ public class AuthService {
 
 	Gson gson = new Gson();
 
-	public SNAPToken getToken() throws Exception {
-		SNAPToken token = new SNAPToken();
-		String responseString = http.getToken(CLIENT, SECRET);
-		if (responseString.matches("(.*)access_token(.*)")) {
-			AuthTokenResp response = new AuthTokenResp();
-			response = gson.fromJson(responseString, AuthTokenResp.class);
-			token.setAccessToken(response.getAccess_token());
-			token.setExpiresIn(response.getExpires_in());
-			token.setTokenType(response.getToken_type());
-			token.setExpiresIn(response.getExpires_in());
-		} else {
-			throw new Exception("Unauthorized");
-		}
-		return token;
-	}
-
-	public boolean isTokenValid(String token) throws Exception {
-		String responseString = http.validateToken(token);
-		ValidateTokenResp response = new ValidateTokenResp();
-		response = gson.fromJson(responseString, ValidateTokenResp.class);
-		if (response.getError() != null) {
-			throw new Exception(response.getError_description());
-		}
-		return true;
-	}
+//	public SNAPToken getToken() throws Exception {
+//		SNAPToken token = new SNAPToken();
+//		String responseString = http.getToken(CLIENT, SECRET);
+//		if (responseString.matches("(.*)access_token(.*)")) {
+//			AuthTokenResp response = new AuthTokenResp();
+//			response = gson.fromJson(responseString, AuthTokenResp.class);
+//			token.setAccessToken(response.getAccess_token());
+//			token.setExpiresIn(response.getExpires_in());
+//			token.setTokenType(response.getToken_type());
+//			token.setExpiresIn(response.getExpires_in());
+//		} else {
+//			throw new Exception("Unauthorized");
+//		}
+//		return token;
+//	}
+//
+//	public boolean isTokenValid(String token) throws Exception {
+//		String responseString = http.validateToken(token);
+//		ValidateTokenResp response = new ValidateTokenResp();
+//		response = gson.fromJson(responseString, ValidateTokenResp.class);
+//		if (response.getError() != null) {
+//			throw new Exception(response.getError_description());
+//		}
+//		return true;
+//	}
 }
